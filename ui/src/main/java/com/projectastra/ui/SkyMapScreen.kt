@@ -26,21 +26,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.projectastra.engine.SkyTarget
 
 @Composable
 fun SkyMapScreen() {
-    var searchQuery by remember { mutableStateOf("") }
-    var selectedObject by remember { mutableStateOf("Sirius") }
-    var hourAngle by remember { mutableStateOf(18.5) }
-    var targetAltitude by remember { mutableStateOf(62.4) }
-    var localTime by remember { mutableStateOf("22:14") }
+    val viewModel = remember { SkyMapViewModel() }
+    val state by viewModel.uiState
+    var searchQuery by remember { mutableStateOf(state.searchQuery) }
 
-    val state = SkyUiState(
-        selectedObject = selectedObject,
-        hourAngle = hourAngle,
-        searchQuery = searchQuery,
-        localTime = localTime,
-        targetAltitude = targetAltitude,
+    val activeTarget = SkyTarget(
+        name = state.selectedObject,
+        type = "Star",
+        rightAscensionDeg = 101.3,
+        declinationDeg = -16.7,
+        magnitude = 1.46,
+        distanceLy = 8.6,
     )
 
     Box(
@@ -74,8 +74,11 @@ fun SkyMapScreen() {
                     )
 
                     BasicTextField(
-                        value = state.searchQuery,
-                        onValueChange = { searchQuery = it },
+                        value = searchQuery,
+                        onValueChange = {
+                            searchQuery = it
+                            viewModel.updateSearch(it)
+                        },
                         singleLine = true,
                         textStyle = TextStyle(
                             color = Color.White,
@@ -122,6 +125,8 @@ fun SkyMapScreen() {
                     }
                 }
             }
+
+            SkyTargetPanel(target = activeTarget)
 
             Card(
                 modifier = Modifier.fillMaxWidth(),

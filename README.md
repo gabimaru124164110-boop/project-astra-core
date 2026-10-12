@@ -5,9 +5,9 @@ Project Astra is a next-generation astronomy and astrophotography platform desig
 ## Architecture
 - `app` — Android application shell and entry points.
 - `ui` — Jetpack Compose screens, search, overlays, and night-vision operational HUD.
-- `engine` — sky simulation, proper motion, catalog models, exoplanet transits, and WDS hierarchies.
+- `engine` — sky simulation, proper motion, catalog models, exoplanet transits, WDS hierarchies, and rendering-support math.
 - `database` — Room persistence and local sky catalog access.
-- `hardware` — telescope drivers, ASCOM/INDI integration, observatory profiles, and guided acquisition.
+- `hardware` — telescope drivers, observatory profiles, ASCOM/INDI integration, and guided acquisition.
 
 ## Scientific engine
 - Gaia DR3-inspired catalog indexing and proper motion calculations.
@@ -20,6 +20,13 @@ Project Astra is a next-generation astronomy and astrophotography platform desig
 - Filament/Vulkan-ready rendering architecture
 - SQLite/Room for local catalog caching and offline sky data
 - Real-time hardware workflows for N.I.N.A., ASCOM/INDI, and PHD2
+
+## Current implementation status
+- Compose-based UI skeleton complete
+- sky navigation and target math implemented
+- exoplanet transit and WDS modeling primitives added
+- observatory and mount integration scaffolding present
+- database catalog repository abstraction added
 
 ## Getting started
 1. Open the repository in Android Studio.
