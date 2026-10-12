@@ -1,0 +1,25 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "project-astra-star-catalog",
+    "entities": [
+      {
+        "tableName": "star_catalog",
+        "createSql": "CREATE TABLE IF NOT EXISTS `star_catalog` (`id` INTEGER NOT NULL, `hipparcos_id` INTEGER, `designation` TEXT NOT NULL, `ra_deg` REAL NOT NULL, `dec_deg` REAL NOT NULL, `magnitude` REAL NOT NULL, `bv_index` REAL NOT NULL, `proper_motion_ra` REAL NOT NULL, `proper_motion_dec` REAL NOT NULL, `is_usable` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          { "fieldPath": "id", "columnName": "id", "affinity": "INTEGER", "notNull": true },
+          { "fieldPath": "hipparcosId", "columnName": "hipparcos_id", "affinity": "INTEGER", "notNull": false },
+          { "fieldPath": "designation", "columnName": "designation", "affinity": "TEXT", "notNull": true },
+          { "fieldPath": "raDeg", "columnName": "ra_deg", "affinity": "REAL", "notNull": true },
+          { "fieldPath": "decDeg", "columnName": "dec_deg", "affinity": "REAL", "notNull": true },
+          { "fieldPath": "magnitude", "columnName": "magnitude", "affinity": "REAL", "notNull": true },
+          { "fieldPath": "bvIndex", "columnName": "bv_index", "affinity": "REAL", "notNull": true },
+          { "fieldPath": "properMotionRa", "columnName": "proper_motion_ra", "affinity": "REAL", "notNull": true },
+          { "fieldPath": "properMotionDec", "columnName": "proper_motion_dec", "affinity": "REAL", "notNull": true },
+          { "fieldPath": "isUsable", "columnName": "is_usable", "affinity": "INTEGER", "notNull": true }
+        ]
+      }
+    ]
+  }
+}
