@@ -27,6 +27,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.projectastra.engine.SkyTarget
+import com.projectastra.engine.TargetRecommendationEngine
 
 @Composable
 fun SkyMapScreen() {
@@ -42,6 +43,16 @@ fun SkyMapScreen() {
         magnitude = 1.46,
         distanceLy = 8.6,
     )
+
+    val recommendation = remember(state) {
+        TargetRecommendationEngine().scoreTarget(
+            targetAltitudeDeg = state.targetAltitude,
+            moonIlluminationPercent = state.moonIllumination,
+            seeingArcsec = state.seeing,
+            filterProfile = "dual-band narrowband",
+            targetType = "nebula",
+        )
+    }
 
     Box(
         modifier = Modifier
@@ -80,10 +91,7 @@ fun SkyMapScreen() {
                             viewModel.updateSearch(it)
                         },
                         singleLine = true,
-                        textStyle = TextStyle(
-                            color = Color.White,
-                            fontSize = 14.sp,
-                        ),
+                        textStyle = TextStyle(color = Color.White, fontSize = 14.sp),
                         modifier = Modifier
                             .weight(1f)
                             .heightIn(min = 40.dp)
@@ -113,7 +121,7 @@ fun SkyMapScreen() {
                             modifier = Modifier.padding(top = 8.dp),
                         )
                         Text(
-                            text = "Catalog: ${state.catalogMode}",
+                            text = "Recommendation score: ${recommendation.score.toInt()} / 100",
                             color = MaterialTheme.colorScheme.secondary,
                             modifier = Modifier.padding(top = 6.dp),
                         )
