@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Card
@@ -28,35 +26,37 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.projectastra.engine.ExoplanetTransitModel
+import com.projectastra.engine.HorizonMaskModel
 import com.projectastra.engine.SkyTarget
-import com.projectastra.engine.TargetRecommendationEngine
-import com.projectastra.engine.UniversalSearchEngine
 
 @Composable
 fun SkyMapScreen() {
     val viewModel = remember { SkyMapViewModel() }
     val state by viewModel.uiState
     var searchQuery by remember { mutableStateOf(state.searchQuery) }
-    val searchEngine = remember { UniversalSearchEngine() }
-    val searchResults = remember(searchQuery) { searchEngine.search(searchQuery) }
 
-    val activeTarget = SkyTarget(
+    val target = SkyTarget(
         name = state.selectedObject,
-        type = "Star",
+        type = "Exoplanet Host",
         rightAscensionDeg = 101.287,
         declinationDeg = -16.716,
         magnitude = 1.46,
         distanceLy = 8.6,
     )
 
-    val recommendation = remember(state) {
-        TargetRecommendationEngine().scoreTarget(
-            targetAltitudeDeg = state.targetAltitude,
-            moonIlluminationPercent = state.moonIllumination,
-            seeingArcsec = state.seeing,
-            filterProfile = "dual-band narrowband",
-            targetType = "nebula",
+    val transit = remember {
+        ExoplanetTransitModel.TransitParameters(
+            periodDays = 3.4,
+            transitDurationHours = 2.8,
+            impactParameter = 0.6,
+            depth = 0.015,
+            hostTemperatureK = 5600.0,
         )
+    }
+
+    val horizon = remember {
+        HorizonMaskModel().maskStrength(state.targetAltitude)
     }
 
     Box(
@@ -88,7 +88,6 @@ fun SkyMapScreen() {
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.titleLarge,
                     )
-
                     BasicTextField(
                         value = searchQuery,
                         onValueChange = {
@@ -103,24 +102,6 @@ fun SkyMapScreen() {
                             .background(Color(0xFF112340), RoundedCornerShape(12.dp))
                             .padding(horizontal = 12.dp, vertical = 10.dp),
                     )
-                }
-            }
-
-            if (searchQuery.isNotBlank()) {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(18.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFF0F1F38)),
-                ) {
-                    LazyColumn(modifier = Modifier.padding(12.dp)) {
-                        items(searchResults) { result ->
-                            Text(
-                                text = "${result.name} • ${result.type} • score ${result.score.toInt()}",
-                                color = MaterialTheme.colorScheme.onSurface,
-                                modifier = Modifier.padding(vertical = 6.dp),
-                            )
-                        }
-                    }
                 }
             }
 
@@ -139,56 +120,22 @@ fun SkyMapScreen() {
                             color = MaterialTheme.colorScheme.primary,
                         )
                         Text(
-                            text = "Local sidereal time: ${state.hourAngle}h • Altitude ${state.targetAltitude}°",
+                            text = "Transit depth: ${(transit.depth * 100.0).format()}% • HZ: ${ExoplanetTransitModel().habitableZoneAU(1.2).format()} AU",
                             color = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.padding(top = 8.dp),
                         )
                         Text(
-                            text = "Recommendation score: ${recommendation.score.toInt()} / 100",
+                            text = "Horizon mask: ${(horizon * 100.0).toInt()}% • Seeing ${state.seeing}" ,
                             color = MaterialTheme.colorScheme.secondary,
                             modifier = Modifier.padding(top = 6.dp),
-                        )
-                        Text(
-                            text = "Local time: ${state.localTime} • Seeing ${state.seeing} • Moon ${state.moonIllumination}%",
-                            color = MaterialTheme.colorScheme.secondary,
-                            modifier = Modifier.padding(top = 4.dp),
                         )
                     }
                 }
             }
 
-            SkyTargetPanel(target = activeTarget)
-
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(18.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF0E213B)),
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Column {
-                        Text("Catalog", color = MaterialTheme.colorScheme.secondary)
-                        Text(
-                            text = state.catalogMode,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.padding(top = 6.dp),
-                        )
-                    }
-
-                    Column {
-                        Text("Hardware", color = MaterialTheme.colorScheme.secondary)
-                        Text(
-                            text = state.hardwareMode,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            modifier = Modifier.padding(top = 6.dp),
-                        )
-                    }
-                }
-            }
+            SkyTargetPanel(target = target)
         }
     }
 }
+
+private fun Double.format(): String = String.format("%.2f", this)
