@@ -1,41 +1,46 @@
-# Project Astra
+package com.projectastra.hardware
 
-Project Astra is a next-generation astronomy and astrophotography platform designed for ultra-fast sky navigation, scientific star catalogs, live hardware integration, and cinematic visualization.
+interface AstroDevice {
+    val name: String
+    fun initialize(): Boolean
+    fun shutdown(): Boolean
+}
 
-## Architecture
-- `app` — Android application shell and entry points.
-- `ui` — Jetpack Compose screens, search, overlays, and night-vision operational HUD.
-- `engine` — sky simulation, proper motion, catalog models, exoplanet transits, WDS hierarchies, and rendering-support math.
-- `database` — Room persistence and local sky catalog access.
-- `hardware` — telescope drivers, observatory profiles, ASCOM/INDI integration, and guided acquisition.
+class NINADriver : AstroDevice {
+    override val name: String = "N.I.N.A."
+    override fun initialize(): Boolean = true
+    override fun shutdown(): Boolean = true
+}
 
-## Scientific engine
-- Gaia DR3-inspired catalog indexing and proper motion calculations.
-- WDS-ready binary and hierarchical multi-star modeling.
-- Exoplanet transit simulation and habitable-zone estimation.
-- Time-travel navigation for ±100,000-year astronomical simulation.
+class AscomDriver : AstroDevice {
+    override val name: String = "ASCOM"
+    override fun initialize(): Boolean = true
+    override fun shutdown(): Boolean = true
+}
 
-## Technology foundation
-- Kotlin + Jetpack Compose
-- Filament/Vulkan-ready rendering architecture
-- SQLite/Room for local catalog caching and offline sky data
-- Real-time hardware workflows for N.I.N.A., ASCOM/INDI, and PHD2
+class IndiDriver : AstroDevice {
+    override val name: String = "INDI"
+    override fun initialize(): Boolean = true
+    override fun shutdown(): Boolean = true
+}
 
-## Current implementation status
-- Compose-based UI skeleton complete
-- sky navigation and target math implemented
-- exoplanet transit and WDS modeling primitives added
-- observatory and mount integration scaffolding present
-- database catalog repository abstraction added
+class PHD2Driver : AstroDevice {
+    override val name: String = "PHD2"
+    override fun initialize(): Boolean = true
+    override fun shutdown(): Boolean = true
+}
 
-## Getting started
-1. Open the repository in Android Studio.
-2. Sync Gradle and resolve Android dependencies.
-3. Run the `app` configuration on an emulator or physical device.
+class AstroDeviceManager {
+    private val devices: List<AstroDevice> = listOf(
+        NINADriver(),
+        AscomDriver(),
+        IndiDriver(),
+        PHD2Driver(),
+    )
 
-## Next implementation goals
-- Live starfield rendering with PSF and sub-pixel anti-aliasing
-- Gaia DR3 streaming and indexing
-- WDS hierarchical orbit overlays
-- Exoplanet target panels and transit metrics
-- Panorama-driven horizon masking and local obstruction modeling
+    fun connectedDevices(): List<String> = devices.map { it.name }
+
+    fun initializeAll(): Boolean = devices.all { it.initialize() }
+
+    fun shutdownAll(): Boolean = devices.all { it.shutdown() }
+}
