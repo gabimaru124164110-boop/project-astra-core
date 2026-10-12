@@ -4,34 +4,35 @@ Project Astra is a next-generation astronomy and astrophotography platform desig
 
 ## Architecture
 - `app` — Android app shell and app state orchestration.
-- `ui` — Compose screens, target panels, search, recommendation results, and observing metadata.
-- `engine` — astronomy math, rendering pipeline abstraction, shader bridge, universal search, and recommendation engine.
+- `ui` — Compose screens, target panels, search, recommendation results, and observational metadata.
+- `engine` — astronomy math, rendering pipeline abstraction, shader bridge, search, recommendation, and observation planning.
 - `database` — Room persistence and catalog search/repository layer.
 - `hardware` — telescope drivers, mount profiles, and acquisition devices.
 
-## Scientific engine
+## Scientific core
 - Gaia DR3-inspired catalog indexing and proper motion calculations.
 - WDS-ready binary and hierarchical multi-star modeling.
 - Exoplanet transit simulation and habitable-zone estimation.
 - Time-travel navigation for ±100,000-year astronomical simulation.
 - Universal search and target discovery across stars, deep-sky objects, exoplanets, and transient phenomena.
 
-## Technology foundation
-- Kotlin + Jetpack Compose
-- Filament/Vulkan-ready rendering architecture
-- SQLite/Room for local catalog caching and offline sky data
-- Real-time hardware workflows for N.I.N.A., ASCOM/INDI, and PHD2
+## Render and acquisition stack
+- Filament-like render abstraction for 120Hz starfield work
+- Night-vision-friendly scene rendering and optimization
+- Session planning, exposure balancing, and filter-aware capture logic
+- Hardware bridge for N.I.N.A., ASCOM, INDI, and PHD2 workflows
 
 ## Current implementation status
 - Compose-based UI skeleton complete
 - target recommendation engine added
 - universal search layer added
-- rendering pipeline and shader bridge added
+- render pipeline and shader bridge added
+- observation planner added
 - central app state and target panel implemented
 - catalog repository and Room schema extended for search and metadata
 
 ## Getting started
-1. Open the repository in Android Studio.
+1. Open the repo in Android Studio.
 2. Sync Gradle and resolve Android dependencies.
 3. Run the `app` configuration on an emulator or physical device.
 
