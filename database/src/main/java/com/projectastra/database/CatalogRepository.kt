@@ -2,7 +2,6 @@ package com.projectastra.database
 
 import android.content.Context
 import androidx.room.Room
-import com.projectastra.database.entity.StarCatalogEntity
 
 class CatalogRepository private constructor(
     context: Context,
@@ -17,11 +16,11 @@ class CatalogRepository private constructor(
             .build()
     }
 
-    suspend fun brightestStars(limit: Int = 50): List<StarCatalogEntity> =
-        database.starCatalogDao().brightestStars(limit)
-
-    suspend fun searchByDesignation(query: String): List<StarCatalogEntity> =
+    suspend fun searchObjects(query: String): List<StarCatalogEntity> =
         database.starCatalogDao().searchByDesignation("%$query%")
+
+    suspend fun brightestObjects(limit: Int = 100): List<StarCatalogEntity> =
+        database.starCatalogDao().brightestStars(limit)
 
     companion object {
         @Volatile

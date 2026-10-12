@@ -11,6 +11,9 @@ data class SkyUiState(
     val latitude: Double = 35.6,
     val longitude: Double = -117.9,
     val targetAltitude: Double = 62.4,
-    val catalogMode: String = "Gaia DR3 / WDS / DSS",
-    val hardwareMode: String = "ASCOM / INDI / PHD2",
+    val catalogMode: String = "Gaia DR3 • WDS • DSS",
+    val hardwareMode: String = "ASCOM • INDI • PHD2",
+    val seeing: Double = 1.7,
+    val moonIllumination: Double = 18.0,
+    val targetAzimuth: Double = 241.0,
 )

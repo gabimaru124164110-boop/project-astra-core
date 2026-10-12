@@ -1,46 +1,40 @@
-package com.projectastra.hardware
+# Project Astra
 
-interface AstroDevice {
-    val name: String
-    fun initialize(): Boolean
-    fun shutdown(): Boolean
-}
+Project Astra is a next-generation astronomy and astrophotography platform designed for ultra-fast sky navigation, scientific star catalogs, live hardware integration, and cinematic visualization.
 
-class NINADriver : AstroDevice {
-    override val name: String = "N.I.N.A."
-    override fun initialize(): Boolean = true
-    override fun shutdown(): Boolean = true
-}
+## Architecture
+- `app` — Android application shell and app state orchestration.
+- `ui` — Compose screens, target panels, search, and observing metadata.
+- `engine` — sky simulation, rendering support, and time-travel math.
+- `database` — Room persistence and catalog search/repository layer.
+- `hardware` — telescope drivers, mount profiles, and acquisition devices.
 
-class AscomDriver : AstroDevice {
-    override val name: String = "ASCOM"
-    override fun initialize(): Boolean = true
-    override fun shutdown(): Boolean = true
-}
+## Scientific engine
+- Gaia DR3-inspired catalog indexing and proper motion calculations.
+- WDS-ready binary and hierarchical multi-star modeling.
+- Exoplanet transit simulation and habitable-zone estimation.
+- Time-travel navigation for ±100,000-year astronomical simulation.
 
-class IndiDriver : AstroDevice {
-    override val name: String = "INDI"
-    override fun initialize(): Boolean = true
-    override fun shutdown(): Boolean = true
-}
+## Technology foundation
+- Kotlin + Jetpack Compose
+- Filament/Vulkan-ready rendering architecture
+- SQLite/Room for local catalog caching and offline sky data
+- Real-time hardware workflows for N.I.N.A., ASCOM/INDI, and PHD2
 
-class PHD2Driver : AstroDevice {
-    override val name: String = "PHD2"
-    override fun initialize(): Boolean = true
-    override fun shutdown(): Boolean = true
-}
+## Current implementation status
+- Compose-based UI skeleton complete
+- central app state and target panel implemented
+- catalog repository and Room schema extended for search and metadata
+- sky navigation, rendering math, and hardware orchestration added
 
-class AstroDeviceManager {
-    private val devices: List<AstroDevice> = listOf(
-        NINADriver(),
-        AscomDriver(),
-        IndiDriver(),
-        PHD2Driver(),
-    )
+## Getting started
+1. Open the repository in Android Studio.
+2. Sync Gradle and resolve Android dependencies.
+3. Run the `app` configuration on an emulator or physical device.
 
-    fun connectedDevices(): List<String> = devices.map { it.name }
-
-    fun initializeAll(): Boolean = devices.all { it.initialize() }
-
-    fun shutdownAll(): Boolean = devices.all { it.shutdown() }
-}
+## Next implementation goals
+- live starfield rendering with PSF and sub-pixel anti-aliasing
+- Gaia DR3 streaming and indexing
+- WDS hierarchical orbit overlays
+- exoplanet target panels and transit metrics
+- panorama-driven horizon masking and local obstruction modeling

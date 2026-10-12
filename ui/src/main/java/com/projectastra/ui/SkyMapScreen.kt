@@ -37,8 +37,8 @@ fun SkyMapScreen() {
     val activeTarget = SkyTarget(
         name = state.selectedObject,
         type = "Star",
-        rightAscensionDeg = 101.3,
-        declinationDeg = -16.7,
+        rightAscensionDeg = 101.287,
+        declinationDeg = -16.716,
         magnitude = 1.46,
         distanceLy = 8.6,
     )
@@ -118,7 +118,7 @@ fun SkyMapScreen() {
                             modifier = Modifier.padding(top = 6.dp),
                         )
                         Text(
-                            text = "Local time: ${state.localTime}",
+                            text = "Local time: ${state.localTime} • Seeing ${state.seeing} • Moon ${state.moonIllumination}%",
                             color = MaterialTheme.colorScheme.secondary,
                             modifier = Modifier.padding(top = 4.dp),
                         )

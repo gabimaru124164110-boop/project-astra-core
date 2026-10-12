@@ -19,10 +19,15 @@ class SkyMapViewModel : ViewModel() {
             targetAltitude = 65.0,
             catalogMode = "Gaia DR3 • WDS • DSS",
             hardwareMode = "ASCOM • INDI • PHD2",
+            targetAzimuth = 245.0,
         )
     }
 
     fun updateTime(time: String) {
         uiState.value = uiState.value.copy(localTime = time)
+    }
+
+    fun setSeeing(value: Double) {
+        uiState.value = uiState.value.copy(seeing = value)
     }
 }
