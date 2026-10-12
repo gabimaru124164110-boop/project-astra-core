@@ -4,8 +4,8 @@ Project Astra is a next-generation astronomy and astrophotography platform desig
 
 ## Architecture
 - `app` — Android app shell and app state orchestration.
-- `ui` — Jetpack Compose screens, target panels, search, recommendation results, and observing metadata.
-- `engine` — astronomy math, rendering pipeline abstraction, shader bridge, and recommendation engine.
+- `ui` — Compose screens, target panels, search, recommendation results, and observing metadata.
+- `engine` — astronomy math, rendering pipeline abstraction, shader bridge, universal search, and recommendation engine.
 - `database` — Room persistence and catalog search/repository layer.
 - `hardware` — telescope drivers, mount profiles, and acquisition devices.
 
@@ -14,6 +14,7 @@ Project Astra is a next-generation astronomy and astrophotography platform desig
 - WDS-ready binary and hierarchical multi-star modeling.
 - Exoplanet transit simulation and habitable-zone estimation.
 - Time-travel navigation for ±100,000-year astronomical simulation.
+- Universal search and target discovery across stars, deep-sky objects, exoplanets, and transient phenomena.
 
 ## Technology foundation
 - Kotlin + Jetpack Compose
@@ -24,6 +25,7 @@ Project Astra is a next-generation astronomy and astrophotography platform desig
 ## Current implementation status
 - Compose-based UI skeleton complete
 - target recommendation engine added
+- universal search layer added
 - rendering pipeline and shader bridge added
 - central app state and target panel implemented
 - catalog repository and Room schema extended for search and metadata

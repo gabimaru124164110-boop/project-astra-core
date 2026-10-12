@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Card
@@ -28,12 +30,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.projectastra.engine.SkyTarget
 import com.projectastra.engine.TargetRecommendationEngine
+import com.projectastra.engine.UniversalSearchEngine
 
 @Composable
 fun SkyMapScreen() {
     val viewModel = remember { SkyMapViewModel() }
     val state by viewModel.uiState
     var searchQuery by remember { mutableStateOf(state.searchQuery) }
+    val searchEngine = remember { UniversalSearchEngine() }
+    val searchResults = remember(searchQuery) { searchEngine.search(searchQuery) }
 
     val activeTarget = SkyTarget(
         name = state.selectedObject,
@@ -98,6 +103,24 @@ fun SkyMapScreen() {
                             .background(Color(0xFF112340), RoundedCornerShape(12.dp))
                             .padding(horizontal = 12.dp, vertical = 10.dp),
                     )
+                }
+            }
+
+            if (searchQuery.isNotBlank()) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(18.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color(0xFF0F1F38)),
+                ) {
+                    LazyColumn(modifier = Modifier.padding(12.dp)) {
+                        items(searchResults) { result ->
+                            Text(
+                                text = "${result.name} • ${result.type} • score ${result.score.toInt()}",
+                                color = MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier.padding(vertical = 6.dp),
+                            )
+                        }
+                    }
                 }
             }
 
